@@ -1,0 +1,536 @@
+<html>
+  <head>
+    <title>Analyze prometheus metrics like a data scientist</title>
+    <meta charset="utf-8">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        @page {
+          size: 1210px 681px;
+          margin: 1%;
+        }
+
+        @media print {
+            .remark-slide-scaler {
+                width: 100% !important;
+                height: 100% !important;
+                transform: scale(1) !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+        }
+
+        body {
+            font-family: 'Droid Serif';
+            margin: 0px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #061106;
+        }
+
+        h3 {
+            font-size: 30px;
+            margin-top: -45px;
+        }
+
+        img {
+            max-width: 85%;
+        }
+
+
+        h1 {
+            border-bottom: 1px solid black;
+        }
+
+        /* Two-column layout */
+        .left-column {
+            width: 50%;
+            float: left;
+        }
+
+        .right-column {
+            width: 49%;
+            float: right;
+            padding-top: 0em;
+            margin-top: 0em;
+            text-align: left;
+        }
+
+        table {
+            width: 90%;
+            border-top: 1px solid #e5eff8;
+            border-right: 1px solid #e5eff8;
+            margin: 1em auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            color: #678197;
+            border-bottom: 1px solid #e5eff8;
+            border-left: 1px solid #e5eff8;
+            padding: .3em 1em;
+            text-align: center;
+        }
+
+        tr.odd td {
+            background: #f7fbff
+        }
+
+        tr.odd .column1 {
+            background: #f4f9fe;
+        }
+
+        .column1 {
+            background: #f9fcfe;
+        }
+
+        thead th {
+            background: #f4f9fe;
+            text-align: center;
+            font: bold 1.2em/2em "Century Gothic", "Trebuchet MS", Arial, Helvetica, sans-serif;
+            color: #66a3d3;
+        }
+
+        ol {
+            padding: 0 0 0 1.5em;
+            margin: 1em 0;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            padding-left: 1em;
+            padding-top: 0.5em;
+        }
+
+        ul li ul li {
+            padding-left: 2em;
+            padding-top: 0.2em;
+        }
+
+        li:before {
+            content: "\25cf";
+            display: inline-block;
+            width: 1.5rem;
+        }
+
+        .remark-code, .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+            font-size: 27px;
+        }
+
+        blockquote {
+            border-left: 5px solid #cccccc;
+            padding-left: 1em;
+            margin: 1em -2em;
+            font-style: italic;
+            color: #999999;
+        }
+
+        .remark-slide-number {
+            display: none;
+        }
+
+        .remark-slide {
+            display: table;
+        }
+
+        .remark-slide-content {
+            border-bottom: 50px solid #33AA99;
+            font-size: 26px;
+            padding: 0.5em 2em 0.5em 2em;
+
+        }
+
+        .remark-slide-content:after {
+            content: "";
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            height: 50px;
+            width: 118px;
+
+        }
+
+        .cite {
+            font-size: 0.8em;
+            color: #33AA99;
+            font-style: italic
+        }
+
+        .footnote {
+            position: absolute;
+            bottom: 3em;
+        }
+
+        .twitter {
+            position: absolute;
+            bottom: 0.5em;
+            right: 0.5em;
+        }
+
+        .box {
+            border: 2px solid #000;
+            margin: 10%;
+            text-align: center;
+            padding: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #ddd;
+            border-color: #aaa;
+        }
+
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+class: middle,center
+
+# Analyze Prometheus Metrics Like a Data Scientist
+.center[Georg Öttl]
+.center[Promcon 2017, Munich]
+
+ 
+---
+
+# About me / experiences
+
+.left-column[
+* Enterprise Software Dev.
+* Data Science Services
+* Dev / DevOps / Ops
+* Developer who likes Math
+]
+.right-column[
+![image](img/me.jpg)
+
+.box[Twitter: @goettl]
+        ]
+ 
+ 
+---
+
+# Objective talk 
+
+
+.box[Pushing the limits of prometheus:
+can I have a more reliable alerts model with insights from datasience?]
+  
+ * Journey on how to improve alerts / dashboards with insights from datasience
+ * Integration points to open source datasience tools
+ * Bring light into the dark (like prometheus did)
+ 
+ 
+---
+
+# ... should I?
+
+.box[**Don't use deep learning and datasience when a
+ straight-forward 15 minute rule-based system does well.**]
+
+
+.box[Datascience can help you to detect patterns and facts in your
+metrics you can't see.]
+
+
+ 
+---
+
+# What is already available
+
+* Great architecture to get high quality data
+* Numerical data
+ * Apply mathematical functions on it 
+* Easy and fast data selection (promql)
+* Alert / rule model
+* Chart / histogram vis with Grafana
+ 
+---
+
+# When do I start?
+
+.box[Already working alerts /
+        dashboards you want to improve]
+
+
+
+---
+
+class: middle, left
+ 
+# Next step: get data from prometheus
+
+... to be used in Open Source datascience tools
+
+ 
+---
+ 
+# What data to export?
+
+* Raw metrics data, no functions applied on it
+* As much as possible
+ * Without putting too much load on prometheus / running into a timeout
+ 
+  
+---
+
+# Two ways to get data out of prometheus
+
+* **HTTP API (Poll)**
+ * Exploratory data analysis
+* REMOTE API (Push)
+ * Streaming analysis 
+ 
+ 
+---
+
+# HTTP API - /api/v1/query_range
+
+
+```  python
+requests.get(
+  url = 'http://127.0.0.1:9090/api/v1/query_range',  
+  params = {
+    'query': 'sum({__name__=~".+"})  by (__name__,instance)', 
+    'start': '1502809554', 
+    'end'  : '1502839554', 
+    'step' : '1m'
+  })   
+ 
+{"data": {...,  "resultType": "matrix",
+"result": [{
+  "metric": {"method": "GET",...},
+  "values": [[1500008340,"3"], ... ]},...]
+}}
+```
+
+ 
+---
+
+# Target format for datascience tools (tabular, csv)
+
+.center[.box[X]]
+
+| id  |time | value  | req_dur  | ... |
+|---|:---:|:---:|:---:|:---:|
+| A | 1 | 1  | 4 |...|
+| A | 2 | 2  | 5 |...|
+| B | 1 | 2  | 3 |...|
+| B | 2 | 3  | 2 |...|
+ 
+
+.center[.box[y]]
+
+| id  |time | value  | 
+|---|:---:|:---:|
+| A | 1 | 1  |
+| A | 2 | 1  |
+| B | 1 | 0  |
+| B | 2 | 0  |
+| ... | ... | ... |
+ 
+---
+
+# Easyiest way to export
+
+* Grafana
+* Python (robustperception blog entry)
+ 
+ 
+---
+
+# Reduce data: use domain knowledge to select relevant data subset
+<br><br><br>
+.center[
+```
+{__name__=~".+"}
+```
+]
+ 
+---
+
+# Tip: Use alerts as initial set of training labels
+<br>
+<br>
+
+.center[
+```
+y = ALERTS{name="high_latency"}
+```
+
+<br>
+.box[tidy up, verify true positives, annotate manually, ... ]
+]
+
+ 
+---
+
+# Normalize prometheus datatypes
+
+* Gauges, histograms are ok
+* Counters have to be processed
+ * No repetition in counters. No statistical value in that.
+ * Use e.g derivative function to convert a counter to a gauge equivalent
+ 
+    
+---
+
+class: middle, left
+
+# Examples
+Applied datasience on prometheus metrics
+
+ 
+---
+
+# Example 1 
+
+.box[I can predict the 
+latency of http requests]
+
+* Can I use the prometheus function predict_linear? 
+* Are there other predictions possible?
+ 
+&Darr;&Darr; <a href="./predict_linear.nb.html" target="_blank">R Notebook predict_linear</a>&Darr;&Darr;
+ 
+---
+
+# Example 2 
+ <br>
+
+  .box[
+   There are a better suited metrics to predict http5x failures than the one I use
+   ]
+  
+---
+
+# Choose method 
+<br><br>
+.center[![image](img/ml_map_focus.png)]
+
+ 
+---
+
+# Get metrics into the right format for method
+* Training data with labels needed (X,y)
+* Seasonally adjust
+
+.center[
+.left-column[![png](output_0_1.png)]
+.right-column[![png](output_1_0.png)]
+]
+ 
+---
+
+# Apply feature selection algorithm
+
+```python
+from sklearn.feature_selection import RFE
+from sklearn.ensemble import RandomForestRegressor
+...
+# perform feature selection
+rfe = RFE(
+        RandomForestRegressor(
+            n_estimators=500, 
+            random_state=1, 
+            min_samples_split=5
+      ), 1)
+fit = rfe.fit(X, y)
+...
+```
+
+.box[Selected Feature: 
+POST] 
+ 
+ 
+---
+# Feedback cycle
+
+.box[Rewrite your alerts and dashboards 
+to use label POST to better predict http 5x errors]
+ 
+ 
+---
+
+# Example 3 - metrics / feature selection
+
+* Metrics selection / ranking similar to example 1
+* Metrics extension by applying functions to metrics
+
+<br/>
+.box[[https://github.com/blue-yonder/tsfresh](https://github.com/blue-yonder/tsfresh)]
+
+ 
+---
+
+#  Prometheus datascience mantra
+<br>
+* Create hypothesis about your system and metrics
+* Get metrics (devops) and convert them into the right format
+* Use statistical methods to verify hypothesis
+* Feedback results to system, the dashboards and alerts
+ 
+ 
+---
+
+# Lessons learned
+
+* Alert model improves with insights from descriptive statistics and ML!
+* Depending on the result, correct, discard or handle data differently
+* Day to day usecase: e.g. reduced try and error config on predict_linear function
+* No need to process metrics streaming with ML/AI yet
+
+
+---
+
+class: middle, center
+# Thx for having me here at promcon.io 2017!
+
+        Questions?
+
+
+.box[
+Georg Öttl
+<br> Twitter Handle: **@goettl**]
+
+
+    </textarea>
+    <script src="remark-latest.min.js"></script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script>
+      var slideshow = remark.create();
+      MathJax.Hub.Configured();
+    </script>
+    <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+    
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+  </body>
+</html>
+
+
