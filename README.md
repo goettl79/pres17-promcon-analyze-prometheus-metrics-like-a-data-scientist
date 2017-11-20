@@ -10,6 +10,7 @@ As I'm always appreciating feedback on slides, content, talk, please
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aUOgPdaXOwQ" frameborder="0" allowfullscreen></iframe>
 
 ## Slides
+The slides for the talk can be viewed in a browser. Click here:
 <a href="https://goettl79.github.io/pres17-promcon-analyze-prometheus-metrics-like-a-data-scientist/prometheus-slides.md.html" target="_blank" type="text/html">
 <b>Analyze prometheus metrics like a data scientist</b></a>
 
