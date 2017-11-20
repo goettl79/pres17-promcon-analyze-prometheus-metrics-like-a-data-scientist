@@ -2,8 +2,9 @@
 
 This page/repo contains the slides and demos from my talk on 
 software monitoring with prometheus at the promcon in Munich 2017.
-As I'm always appreciating feedback, please 
-<a href="https://twitter.com/intent/tweet?screen_name=goettl&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-show-count="false">Tweet to @goettl</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+As I'm always appreciating feedback on slides, content, talk, please 
+<a href="https://twitter.com/intent/tweet?screen_name=goettl&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-show-count="false">tweet to @goettl</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
 
 ## Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aUOgPdaXOwQ" frameborder="0" allowfullscreen></iframe>
