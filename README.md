@@ -3,7 +3,7 @@ Monitoring with Prometheus given at #promcon2017 in Munich.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aUOgPdaXOwQ" frameborder="0" allowfullscreen></iframe>
 
-<a href="https://goettl79.github.io/analyze-prometheus-metrics-like-a-data-scientist/prometheus-slides.md.html" target="_blank" type="text/html">
+<a href="https://goettl79.github.io/pres17-promcon-analyze-prometheus-metrics-like-a-data-scientist/prometheus-slides.md.html" target="_blank" type="text/html">
 <b>Analyze prometheus metrics like a data scientist</b>, Georg Öttl, promcon2017, Munich</a>
 
 As I'm always appreciating feedback, please contact me by twitter. Handle  [@goettl](https://twitter.com/goettl)
